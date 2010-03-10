@@ -1,0 +1,5 @@
+cron:
+- description: tw2other-gae-python
+  url: /tw2other
+  schedule: every 1 minutes
+  timezone: Asia/Shanghai

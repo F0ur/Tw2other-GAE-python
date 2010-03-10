@@ -2,15 +2,25 @@ Tw2other base on Google App Engine for python
 
 This is a synchronous tools for twitter to others microblog using Google App Engine for python.
 
-Author: 'F0ur Xu<foureyesxu@gmail.com>'
+Author: 'F0ur Xu <foureyesxu@gmail.com>'
 
-Thanks for the open source: 'Cuies <http://cuies.com>'
+Thanks for the tw2other author: 'Cuies <http://cuies.com>'
+
+Thanks for the twitter api for python author
 
 
 基于GAE的Tw2other
 
 这是一个同步Twitter到其他微博的工具
 
-作者： 'F0ur Xu<foureyesxu@gmail.com>'
+作者： 'F0ur Xu <foureyesxu@gmail.com>'
 
-特别鸣谢PHP开源者：'Cuies <http://cuies.com>'
+特别鸣谢tw2other作者：'Cuies <http://cuies.com>'
+
+特别鸣谢Twitter api for python的作者(谷歌员工orz...)
+
+
+#*********花絮**********
+1.php可以用很猥琐的工厂模式...python不行..只能写了一个简单的工厂模式
+
+2.GAE的db把我折腾的够呛...上线后调试也不算很方便
