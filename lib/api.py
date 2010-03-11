@@ -297,7 +297,7 @@ class Api(object):
             ret_dict = {'error': True, 
                         'message': message }
             return simplejson.dumps(ret_dict, sort_keys = True)
-        except urllib2.DownloadError, ex:
+        except:
             message = "Download Error:下载错误."
             ret_dict = {'error': True, 
                         'message': message }

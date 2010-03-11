@@ -13,7 +13,7 @@ import re
 from renjian import *
 from twitter import *
 from config import *
-#from google.appengine.ext import db
+from google.appengine.ext import db
 
 class serviceFactory():
     def buildService(self, service):
@@ -21,9 +21,9 @@ class serviceFactory():
             return Renjian()
         return None
     
-#class Tweet(db.Model):
-    #tid = db.StringProperty(multiline = False)
-    #date = db.DateTimeProperty(auto_now_add = True)
+class Tweet(db.Model):
+    tid = db.StringProperty(multiline = False)
+    date = db.DateTimeProperty(auto_now_add = True)
 
 class Filter():
     @staticmethod
@@ -63,7 +63,7 @@ if __name__ == '__main__':
         tweets = twitter.getUserTimeline(Config.twitter_user, since_id = tweetid[0].tid, positive_seq = True)
         if isinstance(tweets, list):
             for tweet in tweets:
-                if Filter(tweet, Config.twitter_sync_level):
+                if Filter.match(tweet["text"], Config.twitter_sync_level):
                     continue
                 for service in Config.services.keys():
                     factory = serviceFactory()
