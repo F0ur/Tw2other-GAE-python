@@ -11,6 +11,8 @@ class Config():
     
     INTERVAL = 10
     
+    twitter_sync_level = 1
+    
     twitter_api = 'http://twitter.com/'
     
     twitter_user = 'your_twitter_id'

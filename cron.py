@@ -9,10 +9,11 @@ import sys, os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + "/lib"))
 
+import re
 from renjian import *
 from twitter import *
 from config import *
-from google.appengine.ext import db
+#from google.appengine.ext import db
 
 class serviceFactory():
     def buildService(self, service):
@@ -20,32 +21,57 @@ class serviceFactory():
             return Renjian()
         return None
     
-class Tweet(db.Model):
-    tid = db.StringProperty(multiline = False)
-    date = db.DateTimeProperty(auto_now_add = True)
+#class Tweet(db.Model):
+    #tid = db.StringProperty(multiline = False)
+    #date = db.DateTimeProperty(auto_now_add = True)
+
+class Filter():
+    @staticmethod
+    def match(tweet, sync_level):
+        if re.match(Pattern.getPattern(sync_level), tweet):
+            if sync_level == 0:
+                return False
+            return True
+        return False
+    
+class Pattern():
+    @staticmethod
+    def getPattern(sync_level):
+        if sync_level == 0:
+            return ''
+        elif sync_level == 1:
+            return '@.*'
+        elif sync_level == 2:
+            return 'RT\s@.*'
+        elif sync_level == 3:
+            return 'RT\s|@'
+        else:
+            return ''
 
 
 if __name__ == '__main__':
     twitter = Twitter(Config.twitter_api)
-    tweet_query = Tweet.all().order('-date')
-    tweets = tweet_query.fetch(1)
-    if len(tweets) == 0:
-        message = twitter.getUserTimeline(Config.twitter_user, 1)
+    tweetid_query = Tweet.all().order('-date')
+    tweetid = tweetid_query.fetch(1)
+    if len(tweetid) == 0:
+        tweet = twitter.getUserTimeline(Config.twitter_user, 1)
         if isinstance(message, list):
-            tweet = Tweet()
-            tweet.tid = str(message[0]["id"])
-            tweet.put()
+            tweetid = Tweet()
+            tweetid.tid = str(tweet[0]["id"])
+            tweetid.put()
     else:
-        messages = twitter.getUserTimeline(Config.twitter_user, since_id = tweets[0].tid, positive_seq = True)
-        if isinstance(messages, list):
-            for msg in messages:
+        tweets = twitter.getUserTimeline(Config.twitter_user, since_id = tweetid[0].tid, positive_seq = True)
+        if isinstance(tweets, list):
+            for tweet in tweets:
+                if Filter(tweet, Config.twitter_sync_level):
+                    continue
                 for service in Config.services.keys():
                     factory = serviceFactory()
                     s = factory.buildService(service.capitalize())
                     s.setCredentials(Config.services[service]["username"], Config.services[service]["password"])
-                    s.postText(msg["text"])
-                tweets[0].tid = str(msg["id"])
-                tweets[0].put()
+                    s.postText(tweet["text"])
+                tweetid[0].tid = str(tweet["id"])
+                tweetid[0].put()
                 time.sleep(Config.INTERVAL)
             #print "Send success"
         else:
