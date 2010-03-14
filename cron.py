@@ -9,16 +9,21 @@ import sys, os
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, os.path.abspath(os.path.dirname(__file__) + "/lib"))
 
-import re
 from renjian import *
+from digu import *
 from twitter import *
 from config import *
+
+import re
+import logging
 from google.appengine.ext import db
 
 class serviceFactory():
     def buildService(self, service):
         if service == "Renjian":
             return Renjian()
+        elif service == "Digu":
+            return Digu()
         return None
     
 class Tweet(db.Model):
@@ -55,7 +60,7 @@ if __name__ == '__main__':
     tweetid = tweetid_query.fetch(1)
     if len(tweetid) == 0:
         tweet = twitter.getUserTimeline(Config.twitter_user, 1)
-        if isinstance(tweet, list):
+        if isinstance(message, list):
             tweetid = Tweet()
             tweetid.tid = str(tweet[0]["id"])
             tweetid.put()
@@ -74,6 +79,7 @@ if __name__ == '__main__':
                 tweetid[0].put()
                 time.sleep(Config.INTERVAL)
             #print "Send success"
+            logging.info("Send success")
         else:
             #print messages["message"]
-            pass
+            logging.error(tweets["message"])

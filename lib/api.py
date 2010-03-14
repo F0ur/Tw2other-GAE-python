@@ -198,7 +198,7 @@ class Api(object):
             self._addAuthorizationHeader(username, password)
             handler = self._urllib.HTTPBasicAuthHandler()
             (scheme, netloc, path, params, query, fragment) = urlparse.urlparse(url)
-            handler.add_password(Api._API_REALM, netloc, username, password)
+            handler.add_password(self._API_REALM, netloc, username, password)
             opener = self._urllib.build_opener(handler)
         else:
             opener = self._urllib.build_opener()
