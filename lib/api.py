@@ -284,21 +284,21 @@ class Api(object):
             opener.close()
             
         except urllib2.HTTPError, ex:
-            if ex.code == 200: message = '200 OK: 一切正常' 
-            elif ex.code == 304: message = '304 Not Modified: 没有任何新数据.'
-            elif ex.code == 400: message = '400 Bad Request: 不合法的请求.'
-            elif ex.code == 401: message = '401 Not Authorized: 没有进行用户验证.'
-            elif ex.code == 403: message = '403 Forbidden: 请求被禁止访问的信息.'
-            elif ex.code == 404: message = '404 Not Found: 没有指定的记录.'
-            elif ex.code == 500: message = '500 Internal Server Error: API内部错误.'
-            elif ex.code == 502: message = '502 Bad Gateway: API服务当掉或正在升级.'
-            elif ex.code == 503: message = '503 Service Unavailable: API服务负载过重，稍后再试.'
-            else: message = 'Unkown HTTPError: 未知网络错误'
+            if ex.code == 200: message = u'200 OK: 一切正常' 
+            elif ex.code == 304: message = u'304 Not Modified: 没有任何新数据.'
+            elif ex.code == 400: message = u'400 Bad Request: 不合法的请求.'
+            elif ex.code == 401: message = u'401 Not Authorized: 没有进行用户验证.'
+            elif ex.code == 403: message = u'403 Forbidden: 请求被禁止访问的信息.'
+            elif ex.code == 404: message = u'404 Not Found: 没有指定的记录.'
+            elif ex.code == 500: message = u'500 Internal Server Error: API内部错误.'
+            elif ex.code == 502: message = u'502 Bad Gateway: API服务当掉或正在升级.'
+            elif ex.code == 503: message = u'503 Service Unavailable: API服务负载过重，稍后再试.'
+            else: message = u'Unkown HTTPError: 未知网络错误'
             ret_dict = {'error': True, 
                         'message': message }
             return simplejson.dumps(ret_dict, sort_keys = True)
         except:
-            message = "Download Error:下载错误."
+            message = u'Download Error:下载错误.'
             ret_dict = {'error': True, 
                         'message': message }
             return simplejson.dumps(ret_dict, sort_keys = True)

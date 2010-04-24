@@ -60,7 +60,7 @@ if __name__ == '__main__':
     tweetid = tweetid_query.fetch(1)
     if len(tweetid) == 0:
         tweet = twitter.getUserTimeline(Config.twitter_user, 1)
-        if isinstance(message, list):
+        if isinstance(tweet, list):
             tweetid = Tweet()
             tweetid.tid = str(tweet[0]["id"])
             tweetid.put()
